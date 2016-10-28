@@ -18,10 +18,9 @@ import ListViewPage from './ListViewPage';
 
 export default class Index extends BaseComponent {
 
-    static title = '首页';
-
     constructor(props) {
-        super(props);
+        super(props, '首页');
+        this.isShowLeftButton = false;
     }
 
     render() {
@@ -34,6 +33,14 @@ export default class Index extends BaseComponent {
                         Toast.show('提示信息测试');
                     } }>
                     <Text>Toast</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.item}
+                    onPress={() => {
+                        Loading.show();
+                    } }>
+                    <Text>Loading</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

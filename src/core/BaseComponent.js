@@ -11,9 +11,14 @@ export default class BaseComponent extends Component {
     constructor(props, title) {
         super(props);
         this.title = title;
+        this.isShowLeftButton = true;
     }
 
     componentWillMount() {
+        const routes = this.props.navigator.getCurrentRoutes();
+        let route = routes[routes.length - 1];
+        route.componentInstance = this;
+        window.NavigationBar.switchScene(route);
         // console.log('super.componentWillMount');
     }
 
@@ -21,13 +26,4 @@ export default class BaseComponent extends Component {
         // console.log('super.componentDidMount');
     }
 
-    render() {
-        return (
-            <View>
-                <Text>导航条</Text>
-            </View>
-        );
-    }
 }
-
-const styles = StyleSheet.create({});

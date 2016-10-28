@@ -22,10 +22,8 @@ import {
  * 或者调用BackAndroidUtil.setBackFn方法。
  */
 export let BackAndroidUtil = {
-    navigator: null,
     lastDate: null,
-    bind: (navigator) => {
-        BackAndroidUtil.navigator = navigator;
+    bind: () => {
         BackAndroid.addEventListener('hardwareBackPress', BackAndroidUtil.defaultBackFn);
     },
     unbind: () => {
@@ -37,9 +35,9 @@ export let BackAndroidUtil = {
             curRouter.backFn = backFn;
     },
     getCurrentRoute: () => {
-        if (!BackAndroidUtil.navigator)
+        if (!Navigation)
             return null;
-        const routers = BackAndroidUtil.navigator.getCurrentRoutes();
+        const routers = Navigation.getCurrentRoutes();
         return routers[routers.length - 1];
     },
     defaultBackFn: () => {
@@ -50,7 +48,7 @@ export let BackAndroidUtil = {
             if(result !== null)
                 return true;
         }
-        if (BackAndroidUtil.navigator.getCurrentRoutes().length == 1) {
+        if (Navigation.getCurrentRoutes().length == 1) {
             if (BackAndroidUtil.lastDate && BackAndroidUtil.lastDate + 2000 >= Date.now()) {
                 return false;
             }
@@ -58,7 +56,7 @@ export let BackAndroidUtil = {
             BackAndroidUtil.lastDate = Date.now();
             return true;
         }
-        BackAndroidUtil.navigator.pop();
+        Navigation.pop();
         return true;
     }
 };

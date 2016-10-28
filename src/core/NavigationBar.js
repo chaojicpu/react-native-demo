@@ -1,48 +1,81 @@
+/**
+ * 导航栏
+ * --------------------------------------------------
+ * 需要具备的功能：
+ * 1.可设置导航栏的显示或隐藏。
+ * 2.可自定义左中右区域的组件内容。
+ */
 import React, { Component, PropTypes } from 'react';
 import {
-    AppRegistry,
     StyleSheet,
-    Text,
     View,
+    ScrollView,
+    Text,
+    TextInput,
+    Image,
+    TouchableOpacity,
     TouchableHighlight,
+    Navigator,
+    Animated,
+    Linking,
+    Dimensions,
 } from 'react-native';
 import * as CommonUtil from '../utils/CommonUtil';
 
 export default class NavigationBar extends Component {
 
-    static propTypes = {
-        title: PropTypes.string,
-    };
-
     constructor(props) {
         super(props);
+        this.state = {
+            leftButton: null,
+            title: null,
+            rightButton: null,
+            isShowLeftButton: true,
+        };
+        window.NavigationBar = this;
     }
 
-    toBack() {
+    goBack() {
         CommonUtil.BackAndroidUtil.defaultBackFn();
     }
 
-    toIndex() {
-        window.navigator.popToTop();
+    goHome() {
+        window.Navigation.popToTop();
+    }
+
+    switchScene(route) {
+        if (!route.componentInstance)
+            return false;
+        console.log(route.componentInstance.isShowLeftButton);
+        this.setState({
+            title: route.componentInstance.title,
+            isShowLeftButton: route.componentInstance.isShowLeftButton === undefined ? true : route.componentInstance.isShowLeftButton,
+            rightButton: route.componentInstance.rightButton,
+        });
     }
 
     render() {
+        if (!this.state.title)
+            return null;
         return (
             <View style={styles.container}>
                 <View style={styles.item}>
-                    <TouchableHighlight style={styles.btn}
-                        underlayColor="#777"
-                        activeOpacity={1}
-                        onPress={this.toBack.bind(this)}>
-                        <Text style={styles.itemText}>返回</Text>
-                    </TouchableHighlight>
+                    {
+                        !this.state.isShowLeftButton ? null :
+                            <TouchableHighlight style={styles.btn}
+                                underlayColor="#777"
+                                activeOpacity={1}
+                                onPress={this.goBack.bind(this)}>
+                                <Text style={styles.itemText}>返回</Text>
+                            </TouchableHighlight>
+                    }
                 </View>
                 <View style={[styles.item, styles.itemCenter]}>
                     <TouchableHighlight style={styles.btn}
                         underlayColor="#777"
                         activeOpacity={1}
-                        onPress={this.toIndex.bind(this)}>
-                        <Text style={styles.itemText}>{this.props.title}</Text>
+                        onPress={this.goHome.bind(this)}>
+                        <Text style={styles.itemText}>{this.state.title}</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={styles.item}></View>
@@ -54,7 +87,7 @@ export default class NavigationBar extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        height: 45,
+        height: window.navigationBarHeight,
         backgroundColor: 'gray',
     },
     item: {

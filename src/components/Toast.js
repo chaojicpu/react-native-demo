@@ -1,7 +1,6 @@
 /**
  * 提示信息
  * --------------------------------------------------
- * <Toast ref={(ref) => window.Toast = ref} />
  * Toast.show('提示信息');
  * --------------------------------------------------
  */
@@ -26,6 +25,7 @@ export default class Toast extends Component {
             text: null,
             fadeAnim: new Animated.Value(0),
         };
+        window.Toast = this;
     }
 
     show(text) {
@@ -35,7 +35,7 @@ export default class Toast extends Component {
             Animated.sequence([
                 Animated.timing(
                     this.state.fadeAnim,
-                    { toValue: 1, duration: 500 }
+                    { toValue: 1, duration: 300 }
                 ),
                 Animated.delay(2000),
                 Animated.timing(
@@ -58,7 +58,7 @@ export default class Toast extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'rgba(0,0,0,.7)',
+        backgroundColor: 'rgba(111,111,111,1)',
         position: 'absolute',
         left: 70,
         top: 100,

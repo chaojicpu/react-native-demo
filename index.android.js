@@ -3,12 +3,12 @@ import {
     AppRegistry,
 } from 'react-native';
 
-import Navigation from './src/core/Navigation';
+import Application from './src/core/Application';
 
 class demo extends Component {
 
     render() {
-        return <Navigation/>;
+        return <Application/>;
     }
 
 }
